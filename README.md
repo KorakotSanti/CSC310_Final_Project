@@ -1,3 +1,5 @@
 # CSC310_Final_Project
 
-pip install numpy pandas scipy scikit-learn pillow
+## Digit Recognition
+
+pip install numpy pandas scipy scikit-learn scikit-image pillow
