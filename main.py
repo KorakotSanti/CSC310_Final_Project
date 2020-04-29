@@ -1,41 +1,46 @@
 import tkinter as tk
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageGrab
+from skimage.io import imread
+from skimage.exposure import rescale_intensity
+from skimage.transform import resize
 
 class DigitRecognition:
     
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Image Recognition")
-        self.canvas = tk.Canvas(self.root,width=500, height=350,highlightthickness=1, highlightbackground="black", bg="white")
+        self.canvas = tk.Canvas(self.root,width=500, height=350,highlightthickness=1, highlightbackground="blue", bg="black")
         self.canvas.bind('<B1-Motion>', self.paint)
-        self.canvas.bind('<Button-3>', self.delete)
         self.canvas.grid(row=0)
-        self.predictB = tk.Button(self.root, text="Predict", width=25, bg="yellow", command=self.changeText).grid(row=1)
         self.result = tk.StringVar()
         self.result.set("Empty")
-        self.label = tk.Label(self.root, textvariable=self.result).grid(row=2)
-        self.image=Image.new("LA",(500,350),(255,255))
+        self.label = tk.Label(self.root, textvariable=self.result).grid(row=1)
+        self.predictB = tk.Button(self.root, text="Predict", width=25, bg="yellow", command=self.predictDigit).grid(row=2)
+        self.clearB = tk.Button(self.root, text="Clear", width=25, bg="white", command=self.delete).grid(row=3)
+        self.image=Image.new("LA",(500,350),(0,255))
         self.draw=ImageDraw.Draw(self.image)
         self.root.mainloop()
 
-    def changeText(self):
+    def predictDigit(self):
         # resize image and save as a png
         file='test.png'
         img = self.image.resize((8,8))
         img.save(file)
-
-        self.image=Image.new("LA",(500,350),(255,255))
-        self.draw=ImageDraw.Draw(self.image)
         self.result.set("yes")
 
-    def delete(self, event):
+    def delete(self):
+        self.image=Image.new("LA",(500,350),(255,255))
+        self.draw=ImageDraw.Draw(self.image)
         self.canvas.delete('all')
 
     def paint(self, event):
-        color = 'black'
+        inkwidth=30
+        color = 'white'
         x1, y1 = (event.x-1), (event.y-1)
         x2, y2 = (event.x+1), (event.y+1)
-        self.canvas.create_oval(x1, y1, x2, y2, fill=color, outline=color, width=40)
-        self.draw.line([x1,y1,x2,y2], fill=color, width=40)
+        self.canvas.create_oval(x1, y1, x2, y2, fill=color, outline=color, width=inkwidth)
+
+        self.draw.ellipse([(x1,y1),(x2,y2)], fill=color, outline=color)
+
 if __name__ == "__main__":  
     DigitRecognition()
