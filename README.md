@@ -1,5 +1,10 @@
-# CSC310_Final_Project
+# CSC310 Final Project Digit Recognition
 
-## Digit Recognition
+## How to run
+It is preferred to create a virtual python environment and install all required modules
 
-pip install numpy pandas scipy scikit-learn scikit-image pillow
+You need to install all required modules by:
+- pip install -r requirements.txt
+
+To Run:
+- python3 main.py
