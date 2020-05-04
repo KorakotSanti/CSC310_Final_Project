@@ -1,6 +1,6 @@
 import tkinter as tk
 import numpy as np
-from PIL import Image, ImageDraw, ImageGrab
+from PIL import Image, ImageDraw
 from skimage.io import imread
 from skimage.exposure import rescale_intensity
 from skimage.transform import resize
@@ -44,6 +44,10 @@ class DigitRecognition:
         self.root.mainloop()
 
     def imgprocess(self):
+        """
+        imgprocess function preprocess the image, so that we could use the image to predict its digit
+        """
+
         # need to resize image to 8x8
         tempimg = np.array(self.image)
         newimg = resize(tempimg, (8,8))
@@ -51,35 +55,61 @@ class DigitRecognition:
         # rescale image from value of 0-255 to value 0-16
         newimg = rescale_intensity(newimg, out_range=(0,16))
 
+        # change to numpy array
         imgdata = np.array(newimg)
+
+        # convert to 2d array
         imgdata = imgdata.transpose(2,0,1)
+        # reshape to 1d array
         imgdata = imgdata[0].reshape(1,-1)
 
         return imgdata
 
     def predictDigit(self):
-        # resize image and save as a png
+        """
+        predict Digit: Saves image to test.png and predict the image
+        """
+        
+        #save as png
         file='test.png'
         self.image.save(file)
+
+        # get the image data
         testdata = self.imgprocess()
+
+        # predict!
         res = self.model.predict(testdata)
 
         self.result.set(str(res[0]))
 
     def delete(self):
+        """
+        function clears the canvas
+        """
+
+        # create new image
         self.image=Image.new("LA",(400,400))
         self.draw=ImageDraw.Draw(self.image)
+
+        #clear all in canvas
         self.canvas.delete('all')
         self.result.set("empty")
 
     def paint(self, event):
+        """
+        event function that allows us to draw on canvas
+        """
         inkwidth=10
         color = 'white'
+        # two coordinate points which helps us draw the image
         x1, y1 = (event.x-1), (event.y-1)
         x2, y2 = (event.x+1), (event.y+1)
+
+        # draw on the canvas
         self.canvas.create_oval(x1, y1, x2, y2, fill=color, outline=color, width=inkwidth)
 
-        self.draw.point([x1,y1,x2,y2], fill=color)
+        # draw point on image
+        self.draw.point([event.x, event.y], fill=color)
 
 if __name__ == "__main__":  
     DigitRecognition()
