@@ -1,4 +1,4 @@
-﻿cycler==0.10.0
+cycler==0.10.0
 decorator==4.4.2
 imageio==2.8.0
 joblib==0.14.1
@@ -14,5 +14,5 @@ pytz==2020.1
 PyWavelets==1.1.1
 scikit-image==0.16.2
 scikit-learn==0.22.2.post1
-scipy==1.4.1
+scipy==1.10.0
 six==1.14.0
