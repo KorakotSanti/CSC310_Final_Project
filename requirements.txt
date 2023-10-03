@@ -1,4 +1,4 @@
-﻿cycler==0.10.0
+cycler==0.10.0
 decorator==4.4.2
 imageio==2.8.0
 joblib==0.14.1
@@ -7,7 +7,7 @@ matplotlib==3.2.1
 networkx==2.4
 numpy==1.18.4
 pandas==1.0.3
-Pillow==8.1.1
+Pillow==10.0.1
 pyparsing==2.4.7
 python-dateutil==2.8.1
 pytz==2020.1
